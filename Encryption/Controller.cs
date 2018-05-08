@@ -14,7 +14,10 @@ namespace Encryption
         public Controller()
         {
             Console.WriteLine("Create Controller");
-
+            if (isDebugging)
+            {
+                Console.WriteLine("TEST : " + (-1 % 5));
+            }
         }
 
         // 키워드를 적절히 셋팅
@@ -39,6 +42,56 @@ namespace Encryption
             }
             return letter;
         }
+
+        public ArrayList MakeCryptogram(string cryptogram)
+        {
+
+            cryptogram = cryptogram.Replace(" ", "");
+            
+            char[] cryptoChar = cryptogram.ToArray();
+
+            ArrayList convertCrypto = new ArrayList();
+            
+            int index = 0;
+
+            while (true)
+            {
+                if (index >= cryptoChar.Length)
+                    break;
+
+                char fLetter = cryptoChar[index++];
+
+                char sLetter;
+
+                if (index >= cryptoChar.Length)
+                {
+                    sLetter = 'x';
+                }
+                else
+                {
+                    sLetter = cryptoChar[index++];
+                }
+
+
+
+                convertCrypto.Add(Char.ToLower(fLetter).ToString() + Char.ToLower(sLetter).ToString());
+
+            }
+
+            if (isDebugging)
+            {
+
+            foreach (String str in convertCrypto)
+                {
+                    Console.WriteLine(str);
+                }
+            }
+
+            
+            return convertCrypto;
+
+        }
+
 
         // 평문을 두글자씩 잘라 반환
         public ArrayList MakePlainText(string plainText)
@@ -192,7 +245,7 @@ namespace Encryption
         }
 
         // 평문의 인덱스를 교체
-        public string ChangeIndex(string text, char[,] pwKeyBoard)
+        public string ChangeIndex(string text, char[,] pwKeyBoard, bool isEncrypt)
         {
             /*
              * fChar : 2글자 중 앞
@@ -208,14 +261,36 @@ namespace Encryption
             // 열이 같을 때
             if (sIndex[1] == fIndex[1])
             {
-                fChar = pwKeyBoard[((fIndex[0] + 1) % 5), fIndex[1]];
-                sChar = pwKeyBoard[((sIndex[0] + 1) % 5), sIndex[1]];
+                if (isEncrypt)
+                {
+                    fChar = pwKeyBoard[((fIndex[0] + 1) % 5), fIndex[1]];
+                    sChar = pwKeyBoard[((sIndex[0] + 1) % 5), sIndex[1]];
+                }
+                else
+                {
+                    fChar = pwKeyBoard[((fIndex[0] - 1) < 0 ? 4 : (fIndex[0] - 1)), fIndex[1]];
+                    sChar = pwKeyBoard[((sIndex[0] - 1) < 0 ? 4 : (sIndex[0] - 1)), sIndex[1]];
+
+                }
             }
             // 행이 같을 때
             else if (sIndex[0] == fIndex[0])
             {
-                fChar = pwKeyBoard[fIndex[0], ((fIndex[1] + 1) % 5)];
-                sChar = pwKeyBoard[sIndex[0], ((sIndex[1] + 1) % 5)];
+                if (isEncrypt)
+                {
+                    fChar = pwKeyBoard[fIndex[0], ((fIndex[1] + 1) % 5)];
+                    sChar = pwKeyBoard[sIndex[0], ((sIndex[1] + 1) % 5)];
+                }
+                else
+                {
+                    if (isDebugging)
+                    {
+                        Console.WriteLine("HERE! : " + ((fIndex[1] - 1) % 5));
+                        Console.WriteLine("HERE! : " + ((sIndex[1] - 1) % 5));
+                    }
+                    fChar = pwKeyBoard[fIndex[0], ((fIndex[1] - 1) < 0 ? 4 : (fIndex[1] - 1))];
+                    sChar = pwKeyBoard[sIndex[0], ((sIndex[1] - 1) < 0 ? 4 : (sIndex[1] - 1))];
+                }
             }
             // 둘 다 다를 때
             else
@@ -235,13 +310,13 @@ namespace Encryption
         }
 
         // 암호화
-        public string DoEncrypt(ArrayList plainText, char[,] pwKeyBoard)
+        public string DoConvert(ArrayList plainText, char[,] pwKeyBoard, bool isEncrypt)
         {
             string text = "";
 
             for (int i = 0; i < plainText.Count; i++)
             {
-                plainText[i] = ChangeIndex((string)plainText[i], pwKeyBoard);
+                plainText[i] = ChangeIndex((string)plainText[i], pwKeyBoard, isEncrypt);
                 text += plainText[i];
             }
 
@@ -279,12 +354,26 @@ namespace Encryption
             }
             char[,] pwKeyBoard = ToConvertBoard(pwKey);
             ArrayList convertPlain = MakePlainText(plainText.ToLower()); // textBox에서 소문자로 변환한 후 매개변수로 넘김
+            return DoConvert(convertPlain, pwKeyBoard, true);
 
-            return DoEncrypt(convertPlain, pwKeyBoard);
         }
 
 
 
 
+        public string Decryption(String keyword, String cryptogram, bool isShowingX)
+        {
+            char[] pwKey = MakeKeyword(keyword);
+            char[,] pwKeyBoard = ToConvertBoard(pwKey);
+
+            ArrayList convertCrypto = MakeCryptogram(cryptogram.ToLower());
+
+            string result = DoConvert(convertCrypto, pwKeyBoard, false);
+
+            if (isShowingX)
+                return result;
+            else
+                return result.Replace("x", "");
+        }
     }
 }

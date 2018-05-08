@@ -8,3 +8,13 @@ C:\Users\Mirim\source\repos\Encryption\Encryption\obj\Debug\Encryption.csproj.Ge
 C:\Users\Mirim\source\repos\Encryption\Encryption\obj\Debug\Encryption.csproj.CoreCompileInputs.cache
 C:\Users\Mirim\source\repos\Encryption\Encryption\obj\Debug\Encryption.exe
 C:\Users\Mirim\source\repos\Encryption\Encryption\obj\Debug\Encryption.pdb
+D:\devuri\workspace\Encryption\Encryption\bin\Debug\Encryption.exe.config
+D:\devuri\workspace\Encryption\Encryption\bin\Debug\Encryption.exe
+D:\devuri\workspace\Encryption\Encryption\bin\Debug\Encryption.pdb
+D:\devuri\workspace\Encryption\Encryption\obj\Debug\Encryption.csprojResolveAssemblyReference.cache
+D:\devuri\workspace\Encryption\Encryption\obj\Debug\Encryption.Form1.resources
+D:\devuri\workspace\Encryption\Encryption\obj\Debug\Encryption.Properties.Resources.resources
+D:\devuri\workspace\Encryption\Encryption\obj\Debug\Encryption.csproj.GenerateResource.cache
+D:\devuri\workspace\Encryption\Encryption\obj\Debug\Encryption.csproj.CoreCompileInputs.cache
+D:\devuri\workspace\Encryption\Encryption\obj\Debug\Encryption.exe
+D:\devuri\workspace\Encryption\Encryption\obj\Debug\Encryption.pdb
